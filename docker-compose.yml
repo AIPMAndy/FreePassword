@@ -1,0 +1,26 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: ${CONTAINER_NAME:-vaultwarden}
+    restart: unless-stopped
+    environment:
+      # 必须填最终访问地址（带 https://），否则 WebAuthn、附件下载会异常
+      DOMAIN: "${DOMAIN:?DOMAIN is required}"
+      # 首次部署先设为 true，注册完主账号立刻改 false
+      SIGNUPS_ALLOWED: "${SIGNUPS_ALLOWED:-true}"
+      TZ: "${TZ:-Asia/Shanghai}"
+
+    volumes:
+      - ./vw-data:/data
+
+    # 关键：绑 127.0.0.1，端口不对公网暴露。
+    # 只写 "8081:80" 会绕过防火墙，整个公网都能扫到。
+    ports:
+      - "127.0.0.1:${HOST_PORT:-8081}:80"
+
+    networks:
+      - tunnel
+
+networks:
+  tunnel:
+    external: true
