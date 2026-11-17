@@ -37,7 +37,7 @@
 ## 快速开始
 
 ```bash
-git clone https://github.com/<your-account>/FreePassword.git
+git clone https://github.com/AIPMAndy/FreePassword.git
 cd FreePassword
 cp .env.example .env
 # 编辑 .env，把 DOMAIN 改成一个公网可以访问的域名
